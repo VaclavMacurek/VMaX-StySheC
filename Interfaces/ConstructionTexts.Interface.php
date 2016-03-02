@@ -6,7 +6,7 @@ namespace StySheC;
  * @package VMaX-StySheC
  *
  * @author Václav Macůrek <VaclavMacurek@seznam.cz>
- * @copyright 2014 - 2015 Václav Macůrek
+ * @copyright 2014 - 2016 Václav Macůrek
  *
  * @license GNU LESSER GENERAL PUBLIC LICENSE version 3.0
  *
@@ -32,7 +32,7 @@ interface I_StySheC_Texts_Comments
 	/**
 	 * order of %s: comment text
 	 */
-	const STYSHEC_CODE_COMMENT = "\n// %s \n";
+	const STYSHEC_CODE_COMMENT = "\n/* %s */\n";
 }
 
 ?>

@@ -6,7 +6,7 @@ namespace StySheC;
  * @package VMaX-StySheC
  *
  * @author Václav Macůrek <VaclavMacurek@seznam.cz>
- * @copyright 2014 - 2015 Václav Macůrek
+ * @copyright 2014 - 2016 Václav Macůrek
  *
  * @license GNU LESSER GENERAL PUBLIC LICENSE version 3.0
  *
@@ -49,7 +49,6 @@ interface I_StySheC_Expressions_StyleNames
 	 * pattern for identifying of correct form of style name
 	 */
 	const STYSHEC_PATTERN_STYLENAME = '/^[a-z]{0,}([\-]{1}[a-z]{1,}){0,}$/i';
-	
 }
 
 ?>

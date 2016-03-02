@@ -3,14 +3,15 @@
 namespace StySheC;
 
 use UniCAT\CodeExport;
-use UniCAT\UniCAT;
 use UniCAT\Comments;
+use UniCAT\UniCAT;
+use UniCAT\MethodScope;
 
 /**
  * @package VMaX-StySheC
  *
  * @author Václav Macůrek <VaclavMacurek@seznam.cz>
- * @copyright 2014 - 2015 Václav Macůrek
+ * @copyright 2014 - 2016 Václav Macůrek
  *
  * @license GNU LESSER GENERAL PUBLIC LICENSE version 3.0
  *
@@ -60,7 +61,7 @@ final class CodeGenerator implements I_StySheC_Texts_CodeGenerator
 		}
 		catch(StySheC_Exception $Exception)
 		{
-			$Exception -> ExceptionWarning(__CLASS__, __FUNCTION__, $Exception -> Get_Parameters(__CLASS__, __FUNCTION__));
+			$Exception -> ExceptionWarning(__CLASS__, __FUNCTION__, MethodScope::Get_Parameters(__CLASS__, __FUNCTION__));
 		}
 		
 		/*
@@ -69,11 +70,11 @@ final class CodeGenerator implements I_StySheC_Texts_CodeGenerator
 		$Error = 0;
 		$Patterns = StySheC::Show_Options_Selectors();
 			
-		for($Order = 0; $Order < count($Patterns); $Order++)
+		for($Index = 0; $Index < count($Patterns); $Index++)
 		{
-			if(!preg_match($Patterns[$Order], $Selector))
+			if(!preg_match($Patterns[$Index], $Selector))
 			{
-				$Error = $Order;
+				$Error = $Index;
 			}
 		}
 		
@@ -86,7 +87,7 @@ final class CodeGenerator implements I_StySheC_Texts_CodeGenerator
 		}
 		catch(StySheC_Exception $Exception)
 		{
-			$Exception -> ExceptionWarning(__CLASS__, __FUNCTION__, $Exception -> Get_Parameters(__CLASS__, __FUNCTION__), $Selector, StySheC::Show_Options_Selectors());
+			$Exception -> ExceptionWarning(__CLASS__, __FUNCTION__, MethodScope::Get_Parameters(__CLASS__, __FUNCTION__), $Selector, StySheC::Show_Options_Selectors());
 		}
 		
 		$this -> Selector = $Selector;
@@ -113,7 +114,7 @@ final class CodeGenerator implements I_StySheC_Texts_CodeGenerator
 		}
 		catch(StySheC_Exception $Exception)
 		{
-			$Exception -> ExceptionWarning(__CLASS__, __FUNCTION__, $Exception -> Get_Parameters(__CLASS__, __FUNCTION__)[0]);
+			$Exception -> ExceptionWarning(__CLASS__, __FUNCTION__, MethodScope::Get_Parameters(__CLASS__, __FUNCTION__)[0]);
 		}
 	
 		try
@@ -125,7 +126,7 @@ final class CodeGenerator implements I_StySheC_Texts_CodeGenerator
 		}
 		catch(StySheC_Exception $Exception)
 		{
-			$Exception -> ExceptionWarning(__CLASS__, __FUNCTION__, $Exception -> Get_Parameters(__CLASS__, __FUNCTION__)[0], gettype($Name), 'string');
+			$Exception -> ExceptionWarning(__CLASS__, __FUNCTION__, MethodScope::Get_Parameters(__CLASS__, __FUNCTION__)[0], gettype($Name), 'string');
 		}
 		
 		try
@@ -137,7 +138,7 @@ final class CodeGenerator implements I_StySheC_Texts_CodeGenerator
 		}
 		catch(StySheC_Exception $Exception)
 		{
-			$Exception -> ExceptionWarning(__CLASS__, __FUNCTION__, $Exception -> Get_Parameters(__CLASS__, __FUNCTION__)[0], gettype($Name), StySheC::Show_Options_Scalars());
+			$Exception -> ExceptionWarning(__CLASS__, __FUNCTION__, MethodScope::Get_Parameters(__CLASS__, __FUNCTION__)[0], gettype($Name), StySheC::Show_Options_Scalars());
 		}
 		
 		if(!empty($Value))
