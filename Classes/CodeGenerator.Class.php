@@ -39,16 +39,17 @@ final class CodeGenerator implements I_StySheC_Texts_CodeGenerator
 	 *
 	 * @param string $Selector
 	 *
-	 * @return void
-	 *
 	 * @throws StySheC_Exception if selector was not set as string
 	 * @throws StySheC_Exception if selector does not match to any of patterns for selectors
+	 *
+	 * @example new StySheC('p'); for binding styles to element <p>
+	 * @example new StySheC('.success'); for binding styles to aany element with class "success"
+	 * @example new StySheC('#fail'); for binding styles to aany element with id "fail"
 	 */
-	public function __construct($Selector="")
+	public function __construct($Selector)
 	{
 		/*
-		 * initial setting of instance of class StySheC;
-		 * using of function __construct is also available
+		 * initial setting of instance of class StySheC
 		 */
 		StySheC::Set_Instance();
 		
@@ -61,18 +62,17 @@ final class CodeGenerator implements I_StySheC_Texts_CodeGenerator
 		}
 		catch(StySheC_Exception $Exception)
 		{
-			$Exception -> ExceptionWarning(__CLASS__, __FUNCTION__, MethodScope::Get_Parameters(__CLASS__, __FUNCTION__));
+			$Exception -> ExceptionWarning(__CLASS__, __FUNCTION__, MethodScope::Get_ParameterName(__CLASS__, __FUNCTION__));
 		}
 		
 		/*
 		 * selector must match one of set of patterns
 		 */
 		$Error = 0;
-		$Patterns = StySheC::Show_Options_Selectors();
 			
-		for($Index = 0; $Index < count($Patterns); $Index++)
+		for($Index = 0; $Index < count(StySheC::Show_Options_Selectors()); $Index++)
 		{
-			if(!preg_match($Patterns[$Index], $Selector))
+			if(!preg_match(StySheC::Show_Options_Selectors()[$Index], $Selector))
 			{
 				$Error = $Index;
 			}
@@ -87,7 +87,7 @@ final class CodeGenerator implements I_StySheC_Texts_CodeGenerator
 		}
 		catch(StySheC_Exception $Exception)
 		{
-			$Exception -> ExceptionWarning(__CLASS__, __FUNCTION__, MethodScope::Get_Parameters(__CLASS__, __FUNCTION__), $Selector, StySheC::Show_Options_Selectors());
+			$Exception -> ExceptionWarning(__CLASS__, __FUNCTION__, MethodScope::Get_ParameterName(__CLASS__, __FUNCTION__), $Selector, StySheC::Show_Options_Selectors());
 		}
 		
 		$this -> Selector = $Selector;
@@ -99,11 +99,13 @@ final class CodeGenerator implements I_StySheC_Texts_CodeGenerator
 	 * @param string $Name
 	 * @param string $Value
 	 *
-	 * @return void
-	 *
 	 * @throws StySheC_Exception if style name was not set
+	 * @throws StySheC_Exception if style name was not set as string
+	 * @throws StySheC_Exception if style value was not set as scalar
+	 *
+	 * @example Set_Style('font-size', '5px'); for setting value 5px to style font-size
 	 */
-	public function Set_Style($Name="", $Value="")
+	public function Set_Style($Name, $Value="")
 	{
 		try
 		{
@@ -114,7 +116,7 @@ final class CodeGenerator implements I_StySheC_Texts_CodeGenerator
 		}
 		catch(StySheC_Exception $Exception)
 		{
-			$Exception -> ExceptionWarning(__CLASS__, __FUNCTION__, MethodScope::Get_Parameters(__CLASS__, __FUNCTION__)[0]);
+			$Exception -> ExceptionWarning(__CLASS__, __FUNCTION__, MethodScope::Get_ParameterName(__CLASS__, __FUNCTION__));
 		}
 	
 		try
@@ -126,7 +128,7 @@ final class CodeGenerator implements I_StySheC_Texts_CodeGenerator
 		}
 		catch(StySheC_Exception $Exception)
 		{
-			$Exception -> ExceptionWarning(__CLASS__, __FUNCTION__, MethodScope::Get_Parameters(__CLASS__, __FUNCTION__)[0], gettype($Name), 'string');
+			$Exception -> ExceptionWarning(__CLASS__, __FUNCTION__, MethodScope::Get_Parameters(__CLASS__, __FUNCTION__), gettype($Name), 'string');
 		}
 		
 		try
@@ -138,7 +140,7 @@ final class CodeGenerator implements I_StySheC_Texts_CodeGenerator
 		}
 		catch(StySheC_Exception $Exception)
 		{
-			$Exception -> ExceptionWarning(__CLASS__, __FUNCTION__, MethodScope::Get_Parameters(__CLASS__, __FUNCTION__)[0], gettype($Name), StySheC::Show_Options_Scalars());
+			$Exception -> ExceptionWarning(__CLASS__, __FUNCTION__, MethodScope::Get_Parameters(__CLASS__, __FUNCTION__), gettype($Name), StySheC::Show_Options_Scalars());
 		}
 		
 		if(!empty($Value))
@@ -181,11 +183,6 @@ final class CodeGenerator implements I_StySheC_Texts_CodeGenerator
 			$Exception -> ExceptionWarning(__CLASS__, __FUNCTION__, $Exception -> Get_VariableNameAsText($this -> Styles), 'empty');
 		}
 		
-		if($this -> Comment != FALSE)
-		{
-			$this -> LocalCode[] = sprintf(self::STYSHEC_CODE_COMMENT, $this -> Comment);
-		}
-		
 		/*
 		 * prepares texts of styles
 		 */
@@ -198,23 +195,7 @@ final class CodeGenerator implements I_StySheC_Texts_CodeGenerator
 		 * if comment was not set;
 		 * inserts styles into form of stylesheet
 		 */
-		if($this -> Comment == FALSE)
-		{
-			$this -> LocalCode = sprintf(self::STYSHEC_CODE_STYLESHEET, $this -> Selector, implode('', $this -> LocalCode));
-		}
-		/*
-		 * if comment was set;
-		 * inserts comment;
-		 * inserts styles into form of stylesheet;
-		 * eliminates unwanted items from array;
-		 * converts array into text
-		 */
-		else
-		{
-			$this -> LocalCode[1] = sprintf(self::STYSHEC_CODE_STYLESHEET, $this -> Selector, implode('', array_slice($this -> LocalCode, 1)));
-			$this -> LocalCode = array_slice($this -> LocalCode, 0, 2);
-			$this -> LocalCode = implode('', $this -> LocalCode);
-		}
+		$this -> LocalCode = sprintf(self::STYSHEC_CODE_STYLESHEET, $this -> Selector, implode('', $this -> LocalCode));
 		
 		/*
 		 * sets way how code will be exported;
