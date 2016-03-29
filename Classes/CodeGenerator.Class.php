@@ -37,14 +37,13 @@ final class CodeGenerator implements I_StySheC_Texts_CodeGenerator
 	/**
 	 * sets selector;
 	 *
-	 * @param string $Selector
+	 * @param string $Selector single or multiple selector
 	 *
-	 * @throws StySheC_Exception if selector was not set as string
-	 * @throws StySheC_Exception if selector does not match to any of patterns for selectors
+	 * @throws StySheC_Exception
 	 *
 	 * @example new StySheC('p'); for binding styles to element <p>
-	 * @example new StySheC('.success'); for binding styles to aany element with class "success"
-	 * @example new StySheC('#fail'); for binding styles to aany element with id "fail"
+	 * @example new StySheC('.success'); for binding styles to any element with class "success"
+	 * @example new StySheC('#fail'); for binding styles to any element with id "fail"
 	 */
 	public function __construct($Selector)
 	{
@@ -70,9 +69,9 @@ final class CodeGenerator implements I_StySheC_Texts_CodeGenerator
 		 */
 		$Error = 0;
 			
-		for($Index = 0; $Index < count(StySheC::Show_Options_Selectors()); $Index++)
+		for($Index = 0; $Index < count(StySheC::ShowOptions_Selectors()); $Index++)
 		{
-			if(!preg_match(StySheC::Show_Options_Selectors()[$Index], $Selector))
+			if(!preg_match(StySheC::ShowOptions_Selectors()[$Index], $Selector))
 			{
 				$Error = $Index;
 			}
@@ -87,7 +86,7 @@ final class CodeGenerator implements I_StySheC_Texts_CodeGenerator
 		}
 		catch(StySheC_Exception $Exception)
 		{
-			$Exception -> ExceptionWarning(__CLASS__, __FUNCTION__, MethodScope::Get_ParameterName(__CLASS__, __FUNCTION__), $Selector, StySheC::Show_Options_Selectors());
+			$Exception -> ExceptionWarning(__CLASS__, __FUNCTION__, MethodScope::Get_ParameterName(__CLASS__, __FUNCTION__), $Selector, StySheC::ShowOptions_Selectors());
 		}
 		
 		$this -> Selector = $Selector;
@@ -96,12 +95,10 @@ final class CodeGenerator implements I_StySheC_Texts_CodeGenerator
 	/**
 	 * sets style
 	 *
-	 * @param string $Name
-	 * @param string $Value
+	 * @param string $Name style name
+	 * @param string $Value style value
 	 *
-	 * @throws StySheC_Exception if style name was not set
-	 * @throws StySheC_Exception if style name was not set as string
-	 * @throws StySheC_Exception if style value was not set as scalar
+	 * @throws StySheC_Exception
 	 *
 	 * @example Set_Style('font-size', '5px'); for setting value 5px to style font-size
 	 */
@@ -133,14 +130,14 @@ final class CodeGenerator implements I_StySheC_Texts_CodeGenerator
 		
 		try
 		{
-			if(!empty($Value) && !in_array(gettype($Value), StySheC::Show_Options_Scalars()))
+			if(!empty($Value) && !in_array(gettype($Value), StySheC::ShowOptions_Scalars()))
 			{
 				throw new StySheC_Exception(UniCAT::UNICAT_XCPT_MAIN_CLS, UniCAT::UNICAT_XCPT_MAIN_FNC, UniCAT::UNICAT_XCPT_MAIN_PRM, UniCAT::UNICAT_XCPT_SEC_PRM_MISSING);
 			}
 		}
 		catch(StySheC_Exception $Exception)
 		{
-			$Exception -> ExceptionWarning(__CLASS__, __FUNCTION__, MethodScope::Get_Parameters(__CLASS__, __FUNCTION__), gettype($Name), StySheC::Show_Options_Scalars());
+			$Exception -> ExceptionWarning(__CLASS__, __FUNCTION__, MethodScope::Get_Parameters(__CLASS__, __FUNCTION__), gettype($Name), StySheC::ShowOptions_Scalars());
 		}
 		
 		if(!empty($Value))
