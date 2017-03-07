@@ -6,7 +6,7 @@ namespace StySheC;
  * @package VMaX-StySheC
  *
  * @author Václav Macůrek <VaclavMacurek@seznam.cz>
- * @copyright 2014 - 2016 Václav Macůrek
+ * @copyright 2014 - 2017 Václav Macůrek
  *
  * @license GNU LESSER GENERAL PUBLIC LICENSE version 3.0
  *

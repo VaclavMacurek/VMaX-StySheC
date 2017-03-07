@@ -4,14 +4,13 @@ namespace StySheC;
 
 use UniCAT\CodeExport;
 use UniCAT\Comments;
-use UniCAT\UniCAT;
 use UniCAT\MethodScope;
 
 /**
  * @package VMaX-StySheC
  *
  * @author Václav Macůrek <VaclavMacurek@seznam.cz>
- * @copyright 2014 - 2016 Václav Macůrek
+ * @copyright 2014 - 2017 Václav Macůrek
  *
  * @license GNU LESSER GENERAL PUBLIC LICENSE version 3.0
  *
@@ -19,8 +18,9 @@ use UniCAT\MethodScope;
  */
 final class CodeGenerator implements I_StySheC_Texts_CodeGenerator
 {
-	use CodeExport, Comments;
-	
+	use CodeExport,
+	Comments;
+
 	/**
 	 * selector
 	 *
@@ -33,7 +33,7 @@ final class CodeGenerator implements I_StySheC_Texts_CodeGenerator
 	 * @var array
 	 */
 	private $Styles = array();
-	
+
 	/**
 	 * sets selector;
 	 *
@@ -50,48 +50,48 @@ final class CodeGenerator implements I_StySheC_Texts_CodeGenerator
 		/*
 		 * initial setting of instance of class StySheC
 		 */
-		StySheC::Set_Instance();
-		
+		Core::Set_Instance();
+
 		try
 		{
-			if(empty($Selector))
+			if( empty($Selector) )
 			{
-				throw new StySheC_Exception(UniCAT::UNICAT_XCPT_MAIN_CLS, UniCAT::UNICAT_XCPT_MAIN_FNC, UniCAT::UNICAT_XCPT_MAIN_PRM, UniCAT::UNICAT_XCPT_SEC_PRM_MISSING);
+				throw new StySheC_Exception(Core::UNICAT_XCPT_MAIN_CLS, Core::UNICAT_XCPT_MAIN_FNC, Core::UNICAT_XCPT_MAIN_PRM, Core::UNICAT_XCPT_SEC_PRM_MISSING);
 			}
 		}
-		catch(StySheC_Exception $Exception)
+		catch( StySheC_Exception $Exception )
 		{
 			$Exception -> ExceptionWarning(__CLASS__, __FUNCTION__, MethodScope::Get_ParameterName(__CLASS__, __FUNCTION__));
 		}
-		
+
 		/*
 		 * selector must match one of set of patterns
 		 */
 		$Error = 0;
-			
-		for($Index = 0; $Index < count(StySheC::ShowOptions_Selectors()); $Index++)
+
+		for( $Index = 0; $Index < count(Core::ShowOptions_Selectors()); $Index++ )
 		{
-			if(!preg_match(StySheC::ShowOptions_Selectors()[$Index], $Selector))
+			if( !preg_match(Core::ShowOptions_Selectors()[$Index], $Selector) )
 			{
 				$Error = $Index;
 			}
 		}
-		
+
 		try
 		{
-			if($Error == 0)
+			if( $Error == 0 )
 			{
-				throw new StySheC_Exception(UniCAT::UNICAT_XCPT_MAIN_CLS, UniCAT::UNICAT_XCPT_MAIN_FNC, UniCAT::UNICAT_XCPT_MAIN_PRM, UniCAT::UNICAT_XCPT_SEC_PRM_WRONGREGEX);
+				throw new StySheC_Exception(Core::UNICAT_XCPT_MAIN_CLS, Core::UNICAT_XCPT_MAIN_FNC, Core::UNICAT_XCPT_MAIN_PRM, Core::UNICAT_XCPT_SEC_PRM_WRONGREGEX);
 			}
 		}
-		catch(StySheC_Exception $Exception)
+		catch( StySheC_Exception $Exception )
 		{
-			$Exception -> ExceptionWarning(__CLASS__, __FUNCTION__, MethodScope::Get_ParameterName(__CLASS__, __FUNCTION__), $Selector, StySheC::ShowOptions_Selectors());
+			$Exception -> ExceptionWarning(__CLASS__, __FUNCTION__, MethodScope::Get_ParameterName(__CLASS__, __FUNCTION__), $Selector, Core::ShowOptions_Selectors());
 		}
-		
+
 		$this -> Selector = $Selector;
 	}
-	
+
 	/**
 	 * sets style
 	 *
@@ -102,106 +102,106 @@ final class CodeGenerator implements I_StySheC_Texts_CodeGenerator
 	 *
 	 * @example Set_Style('font-size', '5px'); for setting value 5px to style font-size
 	 */
-	public function Set_Style($Name, $Value="")
+	public function Set_Style($Name, $Value = "")
 	{
 		try
 		{
-			if(empty($Name))
+			if( empty($Name) )
 			{
-				throw new StySheC_Exception(UniCAT::UNICAT_XCPT_MAIN_CLS, UniCAT::UNICAT_XCPT_MAIN_FNC, UniCAT::UNICAT_XCPT_MAIN_PRM, UniCAT::UNICAT_XCPT_SEC_PRM_MISSING);
+				throw new StySheC_Exception(Core::UNICAT_XCPT_MAIN_CLS, Core::UNICAT_XCPT_MAIN_FNC, Core::UNICAT_XCPT_MAIN_PRM, Core::UNICAT_XCPT_SEC_PRM_MISSING);
 			}
 		}
-		catch(StySheC_Exception $Exception)
+		catch( StySheC_Exception $Exception )
 		{
 			$Exception -> ExceptionWarning(__CLASS__, __FUNCTION__, MethodScope::Get_ParameterName(__CLASS__, __FUNCTION__));
 		}
-	
+
 		try
 		{
-			if(!is_string($Name))
+			if( !is_string($Name) )
 			{
-				throw new StySheC_Exception(UniCAT::UNICAT_XCPT_MAIN_CLS, UniCAT::UNICAT_XCPT_MAIN_FNC, UniCAT::UNICAT_XCPT_MAIN_PRM, UniCAT::UNICAT_XCPT_SEC_PRM_WRONGVALTYPE);
+				throw new StySheC_Exception(Core::UNICAT_XCPT_MAIN_CLS, Core::UNICAT_XCPT_MAIN_FNC, Core::UNICAT_XCPT_MAIN_PRM, Core::UNICAT_XCPT_SEC_PRM_WRONGVALTYPE);
 			}
 		}
-		catch(StySheC_Exception $Exception)
+		catch( StySheC_Exception $Exception )
 		{
 			$Exception -> ExceptionWarning(__CLASS__, __FUNCTION__, MethodScope::Get_Parameters(__CLASS__, __FUNCTION__), gettype($Name), 'string');
 		}
-		
+
 		try
 		{
-			if(!empty($Value) && !in_array(gettype($Value), StySheC::ShowOptions_Scalars()))
+			if( !empty($Value) && !Core::Check_IsScalar($Value) )
 			{
-				throw new StySheC_Exception(UniCAT::UNICAT_XCPT_MAIN_CLS, UniCAT::UNICAT_XCPT_MAIN_FNC, UniCAT::UNICAT_XCPT_MAIN_PRM, UniCAT::UNICAT_XCPT_SEC_PRM_MISSING);
+				throw new StySheC_Exception(Core::UNICAT_XCPT_MAIN_CLS, Core::UNICAT_XCPT_MAIN_FNC, Core::UNICAT_XCPT_MAIN_PRM, Core::UNICAT_XCPT_SEC_PRM_MISSING);
 			}
 		}
-		catch(StySheC_Exception $Exception)
+		catch( StySheC_Exception $Exception )
 		{
-			$Exception -> ExceptionWarning(__CLASS__, __FUNCTION__, MethodScope::Get_Parameters(__CLASS__, __FUNCTION__), gettype($Name), StySheC::ShowOptions_Scalars());
+			$Exception -> ExceptionWarning(__CLASS__, __FUNCTION__, MethodScope::Get_Parameters(__CLASS__, __FUNCTION__), gettype($Name), Core::ShowOptions_Scalars());
 		}
-		
-		if(!empty($Value))
+
+		if( !empty($Value) )
 		{
 			$this -> Styles[$Name] = $Value;
 		}
 	}
-		
+
 	/**
 	 * assembling of code
 	 *
 	 * @return string|void
 	 *
-	 * @throws StySheC_Exception if selector was not set
-	 * @throws StySheC_Exception if styles were not set
+	 * @throws StySheC_Exception
 	 */
 	public function Execute()
 	{
 		try
 		{
-			if($this -> Selector == FALSE)
+			if( $this -> Selector == FALSE )
 			{
-				throw new StySheC_Exception(UniCAT::UNICAT_XCPT_MAIN_CLS, UniCAT::UNICAT_XCPT_MAIN_FNC, UniCAT::UNICAT_XCPT_MAIN_VAR, UniCAT::UNICAT_XCPT_SEC_VAR_PRHBSTMT);
+				throw new StySheC_Exception(Core::UNICAT_XCPT_MAIN_CLS, Core::UNICAT_XCPT_MAIN_FNC, Core::UNICAT_XCPT_MAIN_VAR, Core::UNICAT_XCPT_SEC_VAR_PRHBSTMT);
 			}
 		}
-		catch(StySheC_Exception $Exception)
+		catch( StySheC_Exception $Exception )
 		{
 			$Exception -> ExceptionWarning(__CLASS__, __FUNCTION__, $Exception -> Get_VariableNameAsText($this -> Selector), 'FALSE');
 		}
-		
+
 		try
 		{
-			if(empty($this -> Styles))
+			if( empty($this -> Styles) )
 			{
-				throw new StySheC_Exception(UniCAT::UNICAT_XCPT_MAIN_CLS, UniCAT::UNICAT_XCPT_MAIN_FNC, UniCAT::UNICAT_XCPT_MAIN_VAR, UniCAT::UNICAT_XCPT_SEC_VAR_PRHBSTMT);
+				throw new StySheC_Exception(Core::UNICAT_XCPT_MAIN_CLS, Core::UNICAT_XCPT_MAIN_FNC, Core::UNICAT_XCPT_MAIN_VAR, Core::UNICAT_XCPT_SEC_VAR_PRHBSTMT);
 			}
 		}
-		catch(StySheC_Exception $Exception)
+		catch( StySheC_Exception $Exception )
 		{
 			$Exception -> ExceptionWarning(__CLASS__, __FUNCTION__, $Exception -> Get_VariableNameAsText($this -> Styles), 'empty');
 		}
-		
+
 		/*
 		 * prepares texts of styles
 		 */
-		foreach($this -> Styles as $Name => $Value)
+		foreach( $this -> Styles as $Name => $Value )
 		{
 			$this -> LocalCode[] = sprintf(self::STYSHEC_CODE_STYLES, $Name, $Value);
 		}
-		
+
 		/*
 		 * if comment was not set;
 		 * inserts styles into form of stylesheet
 		 */
 		$this -> LocalCode = sprintf(self::STYSHEC_CODE_STYLESHEET, $this -> Selector, implode('', $this -> LocalCode));
-		
+
 		/*
 		 * sets way how code will be exported;
 		 * exports code
 		 */
-		StySheC::Set_ExportWay(static::$ExportWay);
-		StySheC::Add_Comments($this -> LocalCode, static::$Comments);
-		return StySheC::Convert_Code($this -> LocalCode, __CLASS__);
+		Core::Set_ExportWay(static::$ExportWay);
+		Core::Add_Comments($this -> LocalCode, static::$Comments);
+		return Core::Convert_Code($this -> LocalCode, __CLASS__);
 	}
+
 }
 
 ?>

@@ -6,14 +6,15 @@ namespace StySheC;
  * @package VMaX-StySheC
  *
  * @author Václav Macůrek <VaclavMacurek@seznam.cz>
- * @copyright 2014 - 2016 Václav Macůrek
+ * @copyright 2014 - 2017 Václav Macůrek
  *
  * @license GNU LESSER GENERAL PUBLIC LICENSE version 3.0
  *
  * interface of constants with patterns for stylesheet names
  */
-interface I_StySheC_Expressions_Selectors
+interface I_StySheC_Expressions_AssignSelector
 {
+
 	/**
 	 * pattern for identifying of correct form of attribute selector (with value)
 	 */
@@ -38,6 +39,7 @@ interface I_StySheC_Expressions_Selectors
 	 * pattern for identifying of correct form of element selector
 	 */
 	const STYSHEC_XPSN_ELMTSELECTOR = '/^[a-zA-Z]{1,}(\x20{0,1}[\>\,\*\+\x20]{1}\x20{0,1}[a-zA-Z]{1,}){0,}$/i';
+
 }
 
 /**
@@ -45,10 +47,12 @@ interface I_StySheC_Expressions_Selectors
  */
 interface I_StySheC_Expressions_StyleNames
 {
+
 	/**
 	 * pattern for identifying of correct form of style name
 	 */
 	const STYSHEC_XPSN_STYLENAME = '/^[a-z]{0,}([\-]{1}[a-z]{1,}){0,}$/i';
+
 }
 
 ?>
