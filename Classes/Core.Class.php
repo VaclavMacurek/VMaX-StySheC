@@ -2,7 +2,6 @@
 
 namespace StySheC;
 
-use UniCAT\InstanceOptions;
 use UniCAT\CodeExport;
 use UniCAT\CodeMemory;
 use UniCAT\Comments;
@@ -23,11 +22,7 @@ final class Core extends UniCAT
 {
 	use CodeExport,
 	CodeMemory,
-	Comments,
-	InstanceOptions
-	{
-		Set_Instance as public;
-	}
+	Comments;
 
 	/**
 	 * prepares lists of options

@@ -12,8 +12,9 @@ namespace StySheC;
  *
  * interface with construction texts of class CodeGenerator
  */
-interface I_StySheC_Texts_CodeGenerator
+interface I_StySheC_CodeGenerator
 {
+
 	/**
 	 * order of %s: style name, style value
 	 */
@@ -22,17 +23,20 @@ interface I_StySheC_Texts_CodeGenerator
 	 * order of %s: selector, styles
 	 */
 	const STYSHEC_CODE_STYLESHEET = "\n%s\n{\n%s\n}\n";
+
 }
 
 /**
  * interface with construction text of comments
  */
-interface I_StySheC_Texts_Comments
+interface I_StySheC_Comments
 {
+
 	/**
 	 * order of %s: comment text
 	 */
 	const STYSHEC_CODE_COMMENT = "\n/* %s */\n";
+
 }
 
 ?>

@@ -29,7 +29,7 @@ require_once STYSHEC_ADR.'Interfaces/ConstructionTexts.Interface.php';
 /*
  * Exceptions
  */
-require_once STYSHEC_ADR.'Exceptions/StySheC_Exception.Exception.php';
+require_once STYSHEC_ADR.'Exceptions/Exception.Exception.php';
 
 /*
  * Classes

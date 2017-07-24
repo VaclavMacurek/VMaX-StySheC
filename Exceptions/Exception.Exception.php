@@ -2,7 +2,7 @@
 
 namespace StySheC;
 
-use UniCAT\UniCAT_Exception;
+use UniCAT\Exception as UniCAT_Exception;
 
 /**
  * @package VMaX-StySheC
@@ -14,8 +14,9 @@ use UniCAT\UniCAT_Exception;
  *
  * exception class
  */
-class StySheC_Exception extends UniCAT_Exception
+class Exception extends UniCAT_Exception
 {
+	
 }
 
 ?>

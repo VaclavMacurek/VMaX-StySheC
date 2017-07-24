@@ -51,7 +51,7 @@ interface I_StySheC_Expressions_StyleNames
 	/**
 	 * pattern for identifying of correct form of style name
 	 */
-	const STYSHEC_XPSN_STYLENAME = '/^[a-z]{0,}([\-]{1}[a-z]{1,}){0,}$/i';
+	const STYSHEC_XPSN_STYLENAME = '/^[a-z]{0,}([\-]{1}[a-z]{1,}){1,}$/i';
 
 }
 

@@ -16,7 +16,7 @@ use UniCAT\MethodScope;
  *
  * generation of style sheet code
  */
-final class CodeGenerator implements I_StySheC_Texts_CodeGenerator
+final class CodeGenerator implements I_StySheC_CodeGenerator
 {
 	use CodeExport,
 	Comments;
@@ -45,13 +45,8 @@ final class CodeGenerator implements I_StySheC_Texts_CodeGenerator
 	 * @example new StySheC('.success'); for binding styles to any element with class "success"
 	 * @example new StySheC('#fail'); for binding styles to any element with id "fail"
 	 */
-	public function __construct($Selector)
+	public function __construct($Selector = '')
 	{
-		/*
-		 * initial setting of instance of class StySheC
-		 */
-		Core::Set_Instance();
-
 		try
 		{
 			if( empty($Selector) )
@@ -69,11 +64,12 @@ final class CodeGenerator implements I_StySheC_Texts_CodeGenerator
 		 */
 		$Error = 0;
 
-		for( $Index = 0; $Index < count(Core::ShowOptions_Selectors()); $Index++ )
+		for( $Index = 0; $Index < count(Core::ShowOptions_AssignSelector()); $Index++ )
 		{
-			if( !preg_match(Core::ShowOptions_Selectors()[$Index], $Selector) )
+			if( !preg_match(Core::ShowOptions_AssignSelector()[$Index], $Selector) )
 			{
 				$Error = $Index;
+				break;
 			}
 		}
 
@@ -93,6 +89,36 @@ final class CodeGenerator implements I_StySheC_Texts_CodeGenerator
 	}
 
 	/**
+	 * prevents calling of non-public functions from external scope
+	 *
+	 * @param string $Method function name
+	 * @param array $Parameters function parameters
+	 *
+	 * @throws UniCAT_Exception
+	 */
+	public function __call($Method, $Parameters)
+	{
+		/*
+		 * function must exist
+		 */
+		try
+		{
+			if( in_array($Method, ClassScope::Get_Methods(__CLASS__, ClassScope::UNICAT_OPTION_PUBLIC)) )
+			{
+				throw new StySheC_Exception(Core::UNICAT_XCPT_MAIN_CLS, Core::UNICAT_XCPT_SEC_FNC_MISSING);
+			}
+			else
+			{
+				call_user_func_array($Method, $Parameters);
+			}
+		}
+		catch( StySheC_Exception $Exception )
+		{
+			$Exception -> ExceptionWarning(__CLASS__, $Method);
+		}
+	}
+
+	/**
 	 * sets style
 	 *
 	 * @param string $Name style name
@@ -102,7 +128,7 @@ final class CodeGenerator implements I_StySheC_Texts_CodeGenerator
 	 *
 	 * @example Set_Style('font-size', '5px'); for setting value 5px to style font-size
 	 */
-	public function Set_Style($Name, $Value = "")
+	public function Set_Style($Name, $Value = '')
 	{
 		try
 		{
